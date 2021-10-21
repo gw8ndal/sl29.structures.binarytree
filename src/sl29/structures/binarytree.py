@@ -64,7 +64,10 @@ class Node:
         :return: True if the node is a leaf, False otherwise.
         :rtype: Boolean
         """
-        raise NotImplementedError()
+        if self.left() == None and self.right() == None:
+            return True
+        else:
+            return False
 
     def __repr__(self):
         """
@@ -191,8 +194,13 @@ class BinaryTree:
         :return: an instance :class:`int`
         :rtype: :class:`int`
         """
-        raise NotImplementedError()
-    
+        def _size(node):
+            if node == None:
+                return 0
+            else:
+                return 1 + _size(node.left()) + _size(node.right())
+        
+        return _size(self.root())
 
     def height(self):
         """
@@ -204,7 +212,16 @@ class BinaryTree:
         :return: an instance :class:`int`
         :rtype: :class:`int`
         """
-        raise NotImplementedError()
+        
+        
+        
+        def _height(node):
+            if node == None:
+                return -1
+            else:
+                return 1 + max(_height(node.left()), _height(node.right()))
+        
+        return _height(self.root())
 
     def preorder(self):
         """

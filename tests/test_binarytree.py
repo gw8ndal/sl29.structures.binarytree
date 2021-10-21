@@ -26,7 +26,7 @@ class BinaryTreeTests(unittest.TestCase):
         a = BinaryTree()
         s = a.size()
         expected = 0
-        self.assertEqual(s, expected, "La taille de l'arbre vide devrait être {expected} mais elle vaut {s}.")
+        self.assertEqual(s, expected, f"La taille de l'arbre vide devrait être {expected} mais elle vaut {s}.")
 
     def test_size2(self):
         # test avec un arbre qui ne contient qu'un seul noeud
@@ -34,7 +34,7 @@ class BinaryTreeTests(unittest.TestCase):
         a = BinaryTree(n)
         s = a.size()
         expected = 1
-        self.assertEqual(s, expected, "La taille de l'arbre devrait être {expected} mais elle vaut {s}.")
+        self.assertEqual(s, expected, f"La taille de l'arbre devrait être {expected} mais elle vaut {s}.")
 
     def test_size3(self):
         # test avec l'arbre : racine -> fils droit + gauche
@@ -46,7 +46,7 @@ class BinaryTreeTests(unittest.TestCase):
         a = BinaryTree(n1)
         s = a.size()
         expected = 3
-        self.assertEqual(s, expected, "La taille de l'arbre devrait être {expected} mais elle vaut {s}.")
+        self.assertEqual(s, expected, f"La taille de l'arbre devrait être {expected} mais elle vaut {s}.")
 
     def test_size4(self):
         # test avec l'arbre : racine -> fils gauche -> fils droit 
@@ -58,7 +58,7 @@ class BinaryTreeTests(unittest.TestCase):
         a = BinaryTree(n1)
         s = a.size()
         expected = 3
-        self.assertEqual(s, expected, "La taille de l'arbre devrait être {expected} mais elle vaut {s}.")
+        self.assertEqual(s, expected, f"La taille de l'arbre devrait être {expected} mais elle vaut {s}.")
 
     def test_size5(self):
         # test avec l'arbre importé
@@ -67,7 +67,7 @@ class BinaryTreeTests(unittest.TestCase):
         a.import_tree(tree)
         s = a.size()
         expected = 8
-        self.assertEqual(s, expected, "La taille de l'arbre devrait être {expected} mais elle vaut {s}.")
+        self.assertEqual(s, expected, f"La taille de l'arbre devrait être {expected} mais elle vaut {s}.")
 
     def test_size6(self):
         # test avec l'arbre importé
@@ -76,8 +76,65 @@ class BinaryTreeTests(unittest.TestCase):
         a.import_tree(tree)
         s = a.size()
         expected = 11
-        self.assertEqual(s, expected, "La taille de l'arbre devrait être {expected} mais elle vaut {s}.")
-
+        self.assertEqual(s, expected, f"La taille de l'arbre devrait être {expected} mais elle vaut {s}.")
         
+    def test_height1(self):
+        a = BinaryTree()
+        h = a.height()
+        expected = -1
+        self.assertEqual(h, expected, f"La hauteur de l'arbre devrait être {expected} mais elle vaut {h}.")
+
+    def test_height2(self):
+        n = Node('N1')
+        a = BinaryTree(n)
+        h = a.height()
+        expected = 0
+        self.assertEqual(h, expected, f"La hauteur de l'arbre devrait être {expected} mais elle vaut {h}.")
+
+    def test_height3(self):
+        n, k = Node('N1'), Node('K1')
+        
+        n.set_left(k)
+        a = BinaryTree(n)
+        h = a.height()
+        expected = 1
+        self.assertEqual(h, expected, f"La hauteur de l'arbre devrait être {expected} mais elle vaut {h}.")
+        
+    def test_height4(self):
+        n, k, v, d = Node('N1'), Node('K1'), Node('V1'), Node('D1')
+        
+        n.set_left(k)
+        n.set_right(d)
+        k.set_left(v)
+        a = BinaryTree(n)
+        h = a.height()
+        expected = 2
+        self.assertEqual(h, expected, f"La hauteur de l'arbre devrait être {expected} mais elle vaut {h}.")
+        
+    def test_prefix1(self):
+        a = BinaryTree()
+        p = a.preorder()
+        expected = []
+        self.assertEqual(p, expected, f"Le parcours préfixe de l'arbre devrait être {expected} mais elle vaut {p}."
+        
+    def test_prefix2(self):
+        n = Node(1)
+        a = BinaryTree(n)
+        p = a.preorder()
+        expected = [1]
+        self.assertEqual(p, expected, f"Le parcours préfixe de l'arbre devrait être {expected} mais elle vaut {p}."
+
+    def test_prefix3(self):
+        n, k = Node(1), Node(2)
+        n.set_left(k)
+        a = BinaryTree(n)
+        p = a.preorder()
+        expected = [1, 2]
+        self.assertEqual(p, expected, f"Le parcours préfixe de l'arbre devrait être {expected} mais elle vaut {p}."
+
+#    def test_prefix4(self):
+#        n, k, v, d = Node(+), Node(1), Node(2), Node(3)
+
+
 if __name__ == '__main__':
     unittest.main()        

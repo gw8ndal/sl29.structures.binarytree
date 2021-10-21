@@ -1,0 +1,18 @@
+// Arbre binaire
+digraph {
+	140368327076496 [label=<bound method Node.value of A>]
+	140368327076832 [label=<bound method Node.value of B>]
+	140368327076736 [label=<bound method Node.value of C>]
+	140368327075632 [label=<bound method Node.value of D>]
+	140368327076688 [label=<bound method Node.value of E>]
+	140368325092352 [label=<bound method Node.value of F>]
+	140368327698656 [label=<bound method Node.value of G>]
+	140368328268336 [label=<bound method Node.value of H>]
+	140368327076736 -> 140368327075632
+	140368327076832 -> 140368327076736
+	140368325092352 -> 140368327698656
+	140368327076688 -> 140368325092352
+	140368327076832 -> 140368327076688
+	140368327076496 -> 140368327076832
+	140368327076496 -> 140368328268336
+}
