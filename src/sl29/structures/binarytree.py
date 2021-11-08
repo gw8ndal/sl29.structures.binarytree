@@ -225,9 +225,22 @@ class BinaryTree:
 
     def preorder(self):
         """
-        TODO
+        Returns the path of the tree
+        empty list for an empty tree
         """
-        raise NotImplementedError()
+        def _preorder(node, result=None):
+            if result == None:
+                result = []
+            print(result)
+            if node != None:
+                result.append(node.value())
+                if node.left():
+                    _preorder(node.left(), result)
+                if node.right():
+                    _preorder(node.right(), result)
+            return result
+               
+        return _preorder(self.root())
 
     def postorder(self):
         """
