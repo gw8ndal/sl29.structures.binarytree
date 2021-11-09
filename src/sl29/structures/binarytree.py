@@ -244,13 +244,116 @@ class BinaryTree:
 
     def postorder(self):
         """
-        TODO
+        Returns the path of the tree
+        empty list for an empty tree
         """
-        raise NotImplementedError()
+        def _postorder(node, result=None):
+            if result == None:
+                result = []
+            print(result)
+            if node != None:
+                if node.left():
+                    _postorder(node.left(), result)
+                if node.right():
+                    _postorder(node.right(), result)
+                result.append(node.value())
+            return result
+               
+        return _postorder(self.root())
 
     def inorder(self):
         """
-        TODO
+        Returns the path of the tree
+        empty list for an empty tree
         """
-        raise NotImplementedError()
+        def _inorder(node, result=None):
+            if result == None:
+                result = []
+            print(result)
+            if node != None:
+                if node.left():
+                    _inorder(node.left(), result)
+                result.append(node.value())
+                if node.right():
+                    _inorder(node.right(), result)
+                
+            return result
+               
+        return _inrder(self.root())
+
+
+
+
+class BinarySearchTree(BinaryTree):
+    """A Binary Search Tree"""
+
+    def __init__(self, node = None):
+        super().__init__(node = node)
+
+    def add(self, value):
+        """
+        Add a value in the BST
+
+        :param value: the value to add.
+
+        :return: an instance of :class:`sl29.structures.BinarySearchTree`
+        :rtype: :class:`sl29.structures.BinarySearchTree`
+        """
+        def _add(root, value):
+            if root == None:
+                _add(self.root, value)
+            if value < root.value():
+                if not root.left():
+                    root.set_left(value)
+                else:
+                    _add(root.left(), value)
+            if value > root.value():
+                if not root.right():
+                    root.set_right(value)
+                else:
+                    _add(root.right(), value)
+            return root
+
+        self._root = _add(self.root(), value)
+        return self
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

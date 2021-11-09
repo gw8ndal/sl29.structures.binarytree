@@ -7,6 +7,7 @@ Welcome in the documentation of sl29.structures.binarytree
    README
    Node
    BinaryTree
+   BinarySearchTree
 
 Indices and tables
 ==================

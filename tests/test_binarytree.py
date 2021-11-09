@@ -172,6 +172,37 @@ class BinaryTreeTests(unittest.TestCase):
         h = a.postorder()
         expected = ["3","2","4","1"]
         self.assertEqual(h, expected, f"La hauteur de l'arbre devrait être {expected} mais elle vaut {h}.")
+        
+    def test_infix1(self):
+        a = BinaryTree()
+        p = a.postorder()
+        expected = []
+        self.assertEqual(p, expected, f"Le parcours préfixe de l'arbre devrait être {expected} mais elle vaut {p}.")
+        
+    def test_infix2(self):
+        n = Node("1")
+        a = BinaryTree(n)
+        p = a.postorder()
+        expected = ["1"]
+        self.assertEqual(p, expected, f"Le parcours préfixe de l'arbre devrait être {expected} mais elle vaut {p}.")
+        
+    def test_infix3(self):
+        n, k = Node("1"), Node("2")
+        n.set_left(k)
+        a = BinaryTree(n)
+        p = a.postorder()
+        expected = ["2","1"]
+        self.assertEqual(p, expected, f"Le parcours préfixe de l'arbre devrait être {expected} mais elle vaut {p}.")
+        
+    def test_infix4(self):
+        n, k, v, d = Node("1"), Node("2"), Node("3"), Node("4")
+        n.set_left(k)
+        n.set_right(d)
+        k.set_left(v)
+        a = BinaryTree(n)
+        h = a.postorder()
+        expected = ["3","2","4","1"]
+        self.assertEqual(h, expected, f"La hauteur de l'arbre devrait être {expected} mais elle vaut {h}.")
 
 if __name__ == '__main__':
     unittest.main()        
