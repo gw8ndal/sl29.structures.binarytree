@@ -279,3 +279,22 @@ class BinarySearchTree(BinaryTree):
         
         self._root = _add(self.root(), value)
         return self
+        
+    def search(self, value):
+        """
+        Search for a value in the BST.
+
+        :param value: the value to search for.
+
+        :return: an instance of :class:`sl29.structures.Node` or None if not found.
+        :rtype: :class:`sl29.structures.Node` or None
+        """
+        def _search(node, value):
+            if node != None:
+                if value == node.value():
+                    return node
+                elif value < node.value():
+                    return _search(node.left(), value)
+                else:
+                    return _search(node.right(), value)
+        return _search(self.root(), value)
