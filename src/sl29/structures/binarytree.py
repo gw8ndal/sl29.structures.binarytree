@@ -5,6 +5,7 @@
 # https://notebooks.lecluse.fr/python/nsi/terminale/arbres%20binaires/algorithmique/poo/tp/2020/08/16/nsi_t_algo_arbres.html
 from io import StringIO
 from graphviz import Digraph
+from random import randint
 
 class Node:
     """
@@ -44,7 +45,6 @@ class Node:
     def right(self):
         """
         Return the right child of the node or None.
-
         :return: an instance of a node :class:`sl29.structures.Node` or None
         :rtype: :class:`sl29.structures.Node` or None
         """
@@ -64,10 +64,7 @@ class Node:
         :return: True if the node is a leaf, False otherwise.
         :rtype: Boolean
         """
-        if self.left() == None and self.right() == None:
-            return True
-        else:
-            return False
+        return self.left() == None and self.right() == None
 
     def __repr__(self):
         """
@@ -87,7 +84,6 @@ class BinaryTree:
     def root(self):
         """
         Return the root node of the binary tree.
-
         :return: an instance of a node :class:`sl29.structures.Node` or None
         :rtype: :class:`sl29.structures.Node` or None
         """
@@ -100,7 +96,6 @@ class BinaryTree:
         >>> t = BinaryTree()
         >>> l = ["A", ["B"], ["C", [], ["D"]]]    
         >>> t.import_tree(l)
-
         :param table: an instance of a :class:`list`
         :return: None
         """
@@ -128,7 +123,7 @@ class BinaryTree:
         def representation(dot, noeud, aretes):
             # Ajoute la représentation du noeud à la représentation dot de l'arbre
             if noeud is not None:
-                dot.node(str(id(noeud)), str(noeud.value))
+                dot.node(str(id(noeud)), str(noeud.value()))
                 # Appel récursif de la fonction representation
                 if noeud.left() is not None:
                     representation(dot, noeud.left(), aretes)
@@ -139,14 +134,13 @@ class BinaryTree:
 
         dot = Digraph(comment="Arbre binaire", format='svg')
         aretes = []
-        representation(dot, self._root, aretes)
+        representation(dot, self.root(), aretes)
         dot.edges(aretes)
         dot.view()
 
     def display(self):
         """
         Print the tree
-
         >>> t = BinaryTree()
         >>> l = ["A", ["B"], ["C", [], ["D"]]]    
         >>> t.import_tree(l)
@@ -158,20 +152,24 @@ class BinaryTree:
            └──D
         """
         def r_print_tree(node, out, prefix=''):
-            out.write(node.value()+'\n')
-            if node.left() is not None:
-                out.write(prefix + '├──')
-                prefix += '|  '
-                r_print_tree(node.left(), out, prefix)
-            else:
+            if node is not None:
+                out.write(f"{node.value()}\n")
+                if node.left() is not None:
+                    if node.right():
+                        out.write(prefix + '├──')
+                        prefix += '|  '
+                    else:
+                        out.write(prefix + '└──')
+                    r_print_tree(node.left(), out, prefix)
+                else:
+                    if node.right() is not None:
+                        out.write(prefix + '└──\n')
+                        prefix += '|  '
                 if node.right() is not None:
-                    out.write(prefix + '└──\n')
-                    prefix += '|  '
-            if node.right() is not None:
-                prefix= prefix[0:-3]
-                out.write(prefix + '└──')
-                prefix += '   '
-                r_print_tree(node.right(), out, prefix)
+                    prefix= prefix[0:-3]
+                    out.write(prefix + '└──')
+                    prefix += '   '
+                    r_print_tree(node.right(), out, prefix)
 
         out = StringIO()
         r_print_tree(self.root(), out)
@@ -184,22 +182,20 @@ class BinaryTree:
         
           - 0 for a empty tree
           - 1 for a tree with one node
-
         >>> t = BinaryTree()
         >>> l = ["A", ["B"], ["C", [], ["D"]]] 
         >>> t.import_tree(l)
         >>> t.size()
         4
-
         :return: an instance :class:`int`
         :rtype: :class:`int`
         """
-        def _size(node):
-            if node == None:
+        def _size(root):
+            if root is None:
                 return 0
             else:
-                return 1 + _size(node.left()) + _size(node.right())
-        
+                return 1 + _size(root.left()) + _size(root.right())
+
         return _size(self.root())
 
     def height(self):
@@ -208,78 +204,52 @@ class BinaryTree:
           
           - -1 for a empty tree
           - 0 for a tree with one Node
-
         :return: an instance :class:`int`
         :rtype: :class:`int`
         """
-        
-        
-        
-        def _height(node):
-            if node == None:
-                return -1
+        def _height(root):
+            if root is None:
+                return 0
             else:
-                return 1 + max(_height(node.left()), _height(node.right()))
-        
-        return _height(self.root())
+                return max(_height(root.left()), _height(root.right())) + 1
+
+        return _height(self.root()) - 1
 
     def preorder(self):
         """
-        Returns the path of the tree
-        empty list for an empty tree
+        Return the preoder values of the binarytree in a list
+        :return: an instance :class:`list`
+        :rtype: :class:`list`
         """
-        def _preorder(node, result=None):
-            if result == None:
-                result = []
-            print(result)
-            if node != None:
-                result.append(node.value())
-                if node.left():
-                    _preorder(node.left(), result)
-                if node.right():
-                    _preorder(node.right(), result)
-            return result
-               
+        def _preorder(node):
+            if not node:
+                return []
+            return [node.value()] + _preorder(node.left()) + _preorder(node.right())
         return _preorder(self.root())
 
     def postorder(self):
         """
-        Returns the path of the tree
-        empty list for an empty tree
+        Return the prostorder values of the binarytree in a list
+        :return: an instance :class:`list`
+        :rtype: :class:`list`
         """
-        def _postorder(node, result=None):
-            if result == None:
-                result = []
-            print(result)
-            if node != None:
-                if node.left():
-                    _postorder(node.left(), result)
-                if node.right():
-                    _postorder(node.right(), result)
-                result.append(node.value())
-            return result
-               
+        def _postorder(node):
+            if not node:
+                return []
+            return _postorder(node.left()) + _postorder(node.right()) + [node.value()]
         return _postorder(self.root())
 
     def inorder(self):
         """
-        Returns the path of the tree
-        empty list for an empty tree
+        Return the inorder values of the binarytree in a list
+        :return: an instance :class:`list`
+        :rtype: :class:`list`
         """
-        def _inorder(node, result=None):
-            if result == None:
-                result = []
-            print(result)
-            if node != None:
-                if node.left():
-                    _inorder(node.left(), result)
-                result.append(node.value())
-                if node.right():
-                    _inorder(node.right(), result)
-                
-            return result
-               
-        return _inrder(self.root())
+        def _inorder(node):
+            if not node:
+                return []
+            return _inorder(node.left()) + [node.value()] + _inorder(node.right())
+        return _inorder(self.root())
 
 
 
@@ -289,30 +259,23 @@ class BinarySearchTree(BinaryTree):
 
     def __init__(self, node = None):
         super().__init__(node = node)
-
+        
     def add(self, value):
         """
-        Add a value in the BST
-
+        Add a value in the BST.
+        
         :param value: the value to add.
-
         :return: an instance of :class:`sl29.structures.BinarySearchTree`
         :rtype: :class:`sl29.structures.BinarySearchTree`
         """
-        def _add(root, value):
-            if root == None:
-                _add(self.root, value)
-            if value < root.value():
-                if not root.left():
-                    root.set_left(value)
-                else:
-                    _add(root.left(), value)
-            if value > root.value():
-                if not root.right():
-                    root.set_right(value)
-                else:
-                    _add(root.right(), value)
-            return root
-
+        def _add(node, value):
+            if node is None:
+                node = Node(value)
+            if value < node.value():
+                node.set_left(_add(node.left(), value))
+            elif value > node.value():
+                node.set_right(_add(node.right(), value))
+            return node
+        
         self._root = _add(self.root(), value)
         return self
