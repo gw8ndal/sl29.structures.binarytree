@@ -298,3 +298,69 @@ class BinarySearchTree(BinaryTree):
                 else:
                     return _search(node.right(), value)
         return _search(self.root(), value)
+
+    def delete(self, value):
+        """
+        delete a value in the BST.
+        
+        :param value: the value to delete.
+        :return: an instance of :class:`sl29.structures.BinarySearchTree`.
+        :rtype: :class:`sl29.structures.BinarySearchTree`
+        """
+        def _max(root):
+            """
+            return the leaf with max value within the subtree
+            """
+            right = root.right()
+            if right is None:
+                return root
+            else:
+                return _max(right)
+        
+        def _min(root):
+            """
+            return the leaf with min value within the subtree
+            """
+            left = root.left()
+            if left is None:
+                return root
+            else:
+                return _min(left)
+        
+        def _delete(root, value):
+            # base case
+            if root is None:
+                return root
+            # recursive calls
+            if value < root.value():
+                root.set_left(_delete(root.left(), value))
+                return root
+            elif value > root.value():
+                root.set_right(_delete(root.right(), value))
+                return root
+            # we have found the value
+            else:
+                # if the value is in a leaf
+                if root.is_leaf():
+                    return None
+                # if the value is in a node with only one child
+                elif root.left() and root.right() is None:
+                    return root.left()
+                elif root.right() and root.left() is None:
+                    return root.right()
+                # if the value is in a node with two children
+                else:
+                    # we replace the wether by the left child or the right child (random)
+                    side = randint(0,1)
+                    # some random to balance the tree
+                    if side == 0:
+                        # we delete the max leaf in the subtree, and we replace the value of the node with it
+                        max_value = _max(root.left()).value()
+                        _delete(root ,max_value)
+                        root._value = max_value
+                    else:
+                        # we delete the min leaf in the subtree, and we replace the value of the node with it
+                        min_value = _min(root.right()).value()
+                        _delete(root, min_value)
+                        root._value = min_value
+                    return root
